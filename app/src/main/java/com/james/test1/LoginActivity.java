@@ -3,6 +3,7 @@ package com.james.test1;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,7 +14,6 @@ public class LoginActivity extends AppCompatActivity {
     EditText ed_password;
     String account;
     String password;
-    Button Login_button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,5 +37,11 @@ public class LoginActivity extends AppCompatActivity {
                     .setPositiveButton("OK",null)
                     .show();
         }
+    }
+    public  void apply(View view){
+        Intent intent = new Intent();
+        intent.setClass(LoginActivity.this,Application.class);
+        startActivity(intent);
+
     }
 }

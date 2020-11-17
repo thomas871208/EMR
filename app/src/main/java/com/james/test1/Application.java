@@ -3,16 +3,16 @@ package com.james.test1;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import android.widget.Toast;
 
+import com.vishnusivadas.advanced_httpurlconnection.PutData;
 
 
 public class Application extends AppCompatActivity {
@@ -28,8 +28,7 @@ public class Application extends AppCompatActivity {
     String password;
     String repassword;
     String email;
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference("user");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,13 +39,7 @@ public class Application extends AppCompatActivity {
         ed_password = findViewById(R.id.ed_password);
         ed_repassword = findViewById(R.id.ed_repassword);
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("user");
 
-
-
-//        ContactsInfo contact0 = new ContactsInfo("Hank","00000","123456","a123456","123@gamil.com");
-//        myRef.child("00000").setValue(contact0);
 
     }
     public void apply(View view){
@@ -77,8 +70,43 @@ public class Application extends AppCompatActivity {
                     .setPositiveButton("OK",null)
                     .show();
         }else {
-            ContactsInfo contact0 = new ContactsInfo(name, idnum, account, password, email);
-            myRef.child(idnum).setValue(contact0);
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    //Starting Write and Read data with URL
+                    //Creating array for parameters
+                    String[] field = new String[5];
+                    field[0] = "name";
+                    field[1] = "numid";
+                    field[2] = "account";
+                    field[3] = "password";
+                    field[4] = "email";
+                    //Creating array for data
+                    String[] data = new String[5];
+                    data[0] = name;
+                    data[1] = idnum;
+                    data[2] = account;
+                    data[3] = password;
+                    data[4] = email;
+                    PutData putData = new PutData("http://172.20.10.2/msc/signup.php", "POST", field, data);
+                    if (putData.startPut()) {
+                        if (putData.onComplete()) {
+                            String result = putData.getResult();
+                            if(result.equals("Sign Up Success")){
+                                Toast.makeText(getApplicationContext(),result,Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }else{
+                                Toast.makeText(getApplicationContext(),result,Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                    //End Write and Read data with URL
+                }
+            });
+
         }
     }
 }

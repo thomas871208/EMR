@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#CDC9C9"
+    android:background="@color/white"
     tools:context=".Application">
 
     <EditText
@@ -101,12 +101,26 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:onClick="apply"
         android:text="申請"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:backgroundTint="@android:color/darker_gray"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:backgroundTint="#4CAF50"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ed_email" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:onClick="back"
+        android:text="返回"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:backgroundTint="#4CAF50"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button" />
 </androidx.constraintlayout.widget.ConstraintLayout>

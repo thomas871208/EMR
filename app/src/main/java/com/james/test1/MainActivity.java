@@ -8,9 +8,12 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -46,11 +49,11 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         webView = new WebView(this);
         setContentView(webView);
         webView.loadUrl("http://172.20.10.2/msc/index.php");
         webView.getSettings().setJavaScriptEnabled(true);
+        webView.addJavascriptInterface(this, "nativeMethod");
         webView.setWebViewClient(new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -71,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
                     .show();
                     return true;
                         }
+
+
             @Override
             public boolean onJsConfirm(WebView view, String url,
                                        String message, final JsResult result) {
@@ -85,6 +90,9 @@ public class MainActivity extends AppCompatActivity {
                             }
 
         });
+
+
+
         if (!login) {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivityForResult(intent, rc_login);
@@ -92,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -107,6 +116,14 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+    @JavascriptInterface
+    public void toActivity(String activityName) {
+        //此處應該定義常量對應，同時提供給web頁面編寫者
+        if (TextUtils.equals(activityName, "a")) {
+            startActivity(new Intent(this, LoginActivity.class));
+        } else {
 
+        }
+    }
 
 }
